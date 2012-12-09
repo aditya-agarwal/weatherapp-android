@@ -1,7 +1,7 @@
-package com.test.weatherapp;
+package com.test.weatherapp.activities;
 
 import android.os.Bundle;
-import com.test.weatherapp.activities.BaseActivity;
+import com.test.weatherapp.R;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
 
 public class TodaysWeatherActivity extends BaseActivity {
@@ -21,6 +21,6 @@ public class TodaysWeatherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        WeatherAppServiceHelper.getInstance(this).getTodaysWeather();
+        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("Farmington Hills");
     }
 }

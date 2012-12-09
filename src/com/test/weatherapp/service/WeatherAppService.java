@@ -18,7 +18,8 @@ public class WeatherAppService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String action = intent.getStringExtra("action");
-        ProcessorFactory.createProcessor(action).getWeather();
+        String location = intent.getStringExtra("location");
+        ProcessorFactory.createProcessor(action).getWeather(location);
 
         //TODO: Broadcast intent
     }

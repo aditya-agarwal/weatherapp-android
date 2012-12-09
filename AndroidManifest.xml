@@ -10,7 +10,7 @@
 
 
     <application android:label="@string/app_name">
-        <activity android:name="TodaysWeatherActivity"
+        <activity android:name=".activities.TodaysWeatherActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

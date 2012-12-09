@@ -1,17 +1,21 @@
 package com.test.weatherapp.processor;
 
 import com.test.weatherapp.http.HttpHandler;
+import org.json.JSONObject;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/8/12
  */
-public class TodaysWeatherProcessor implements Processor {
+public class TodaysWeatherProcessor extends Processor {
 
     @Override
-    public void getWeather() {
+    public void getWeather(String location) {
         HttpHandler httpHandler = new HttpHandler();
-        httpHandler.request("http://free.worldweatheronline.com/feed/weather.ashx?q=Farmington+Hills&format=json&num_of_days=2&key=223f76cff5164333120812");
+        JSONObject json = httpHandler.request(createUrl(location, "1"));
+
+        //TODO: get json parse it and store in db and update callabck
     }
+
 }

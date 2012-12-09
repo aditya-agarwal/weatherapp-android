@@ -29,9 +29,11 @@ public class WeatherAppServiceHelper {
     }
 
     public static WeatherAppServiceHelper getInstance(Context context) {
+
         if (mServiceHelper == null)
             mServiceHelper = new WeatherAppServiceHelper(context);
         mServiceHelper.setContext(context);
+
         return mServiceHelper;
     }
 
@@ -39,26 +41,26 @@ public class WeatherAppServiceHelper {
         mContext = context;
     }
 
-
     /**
      * Helper method to start service to get todays weather
      */
-    public boolean getTodaysWeather(){
-        return startService(WeatherAppConstants.ACTION_TODAYS_WEATHER);
+    public boolean getTodaysWeather(String location){
+        return startService(WeatherAppConstants.ACTION_TODAYS_WEATHER, location);
     }
 
     /**
      * Helper method to start service to get weeks weather
      */
-    public boolean getWeeklyWeather(){
-        return startService(WeatherAppConstants.ACTION_WEEKS_WEATHER);
+    public boolean getWeeklyWeather(String location){
+        return startService(WeatherAppConstants.ACTION_WEEKS_WEATHER, location);
     }
 
-    private boolean startService(String action){
+    private boolean startService(String action, String location){
 
         if(ToolKit.isInternetAvailable(mContext)){
             intent = new Intent(mContext, WeatherAppService.class);
             intent.putExtra("action", action);
+            intent.putExtra("location", location);
             mContext.startService(intent);
             return true;
         }else {
