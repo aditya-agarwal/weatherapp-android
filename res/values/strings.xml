@@ -3,4 +3,5 @@
     <string name="app_name">weather-app-android</string>
     <string name="no_internet_available"> No Internet Available</string>
     <string name="parsing_error"> Parsing Error </string>
+    <string name="bad_location"> Incorrect Location Please Try Again </string>
 </resources>

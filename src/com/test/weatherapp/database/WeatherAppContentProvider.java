@@ -77,6 +77,6 @@ public class WeatherAppContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 }

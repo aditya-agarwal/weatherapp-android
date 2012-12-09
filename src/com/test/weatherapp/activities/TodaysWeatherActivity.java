@@ -10,7 +10,7 @@ import com.test.weatherapp.util.WeatherAppConstants;
 public class TodaysWeatherActivity extends BaseActivity {
 
     private static final String LOG_TAG = "CurrentWeatherActivity";
-
+    private WeatherAppBroadcastReceiver mReceiver;
     @Override
     public String getTag() {
         return LOG_TAG;
@@ -24,16 +24,18 @@ public class TodaysWeatherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("Farmington Hills");
+        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("asdkjf");
 
-        registerReceiver(new WeatherAppBroadcastReceiver(),new IntentFilter(WeatherAppConstants.ACTION_PARSE_ERROR));
+        mReceiver = new WeatherAppBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
+        filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
+        registerReceiver(mReceiver,filter);
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        //TODO: UNREGISTER RECEIVER
+        unregisterReceiver(mReceiver);
     }
-
-
 }

@@ -30,6 +30,7 @@ public abstract class Processor {
     }
 
     protected String createUrl(String location, String num_of_days){
+
         List<NameValuePair> params = new ArrayList<NameValuePair>();
 
         if(!location.equals(" ") && location !=null){
@@ -45,43 +46,55 @@ public abstract class Processor {
 
     public void parse(JSONObject object) {
         try {
-            //Delete previously stored values
-            mContext.getContentResolver().delete(WeatherAppDBContract.Weather.CONTENT_URI, null,null);
+
             JSONObject data = object.getJSONObject(WeatherAppConstants.TAG_DATA);
-            JSONArray weather = data.getJSONArray(WeatherAppConstants.TAG_WEATHER);
 
-            for(int i = 0; i < weather.length(); i++){
-                JSONObject weatherObj = weather.getJSONObject(i);
+            if(data.has(WeatherAppConstants.TAG_ERROR)){
+              broadCastIntent(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
+            }
 
-                String date = weatherObj.getString(WeatherAppConstants.TAG_DATE);
-                String tempMax = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MAX);
-                String tempMin = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MIN);
-                String precip = weatherObj.getString(WeatherAppConstants.TAG_PRECIP);
+            else if(data.has(WeatherAppConstants.TAG_WEATHER)) {
 
-                //Description
-                JSONArray descArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_WEATHER_DESC);
-                JSONObject descObj = descArr.getJSONObject(0);
-                String description = descObj.getString(WeatherAppConstants.TAG_VALUE);
+                //Delete previously stored values
+                mContext.getContentResolver().delete(WeatherAppDBContract.Weather.CONTENT_URI, null,null);
+                JSONArray weather = data.getJSONArray(WeatherAppConstants.TAG_WEATHER);
 
-                //Icon URL
-                JSONArray urlArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_ICON_URL);
-                JSONObject urlObj = urlArr.getJSONObject(0);
-                String iconUrl = urlObj.getString(WeatherAppConstants.TAG_VALUE);
+                for(int i = 0; i < weather.length(); i++){
+                        JSONObject weatherObj = weather.getJSONObject(i);
 
-                ContentValues value = new ContentValues();
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DATE, date);
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE, tempMax);
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION, precip);
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL, iconUrl);
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION, description);
-                mContext.getContentResolver().insert(WeatherAppDBContract.Weather.CONTENT_URI, value);
+                        String date = weatherObj.getString(WeatherAppConstants.TAG_DATE);
+                        String tempMax = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MAX);
+                        String tempMin = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MIN);
+                        String precip = weatherObj.getString(WeatherAppConstants.TAG_PRECIP);
+
+                        //Description
+                        JSONArray descArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_WEATHER_DESC);
+                        JSONObject descObj = descArr.getJSONObject(0);
+                        String description = descObj.getString(WeatherAppConstants.TAG_VALUE);
+
+                        //Icon URL
+                        JSONArray urlArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_ICON_URL);
+                        JSONObject urlObj = urlArr.getJSONObject(0);
+                        String iconUrl = urlObj.getString(WeatherAppConstants.TAG_VALUE);
+
+                        ContentValues value = new ContentValues();
+                        value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DATE, date);
+                        value.put(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE, tempMax);
+                        value.put(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION, precip);
+                        value.put(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL, iconUrl);
+                        value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION, description);
+                        mContext.getContentResolver().insert(WeatherAppDBContract.Weather.CONTENT_URI, value);
+                 }
             }
         } catch (JSONException e) {
-            Intent broadcastIntent = new Intent();
-            broadcastIntent.setAction(WeatherAppConstants.ACTION_PARSE_ERROR);
-            mContext.sendBroadcast(broadcastIntent);
+            broadCastIntent(WeatherAppConstants.ACTION_PARSE_ERROR);
             e.printStackTrace();
         }
+    }
 
+    private void broadCastIntent(String action){
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(action);
+        mContext.sendBroadcast(broadcastIntent);
     }
 }
