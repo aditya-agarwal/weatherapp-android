@@ -13,6 +13,7 @@ public class WeatherAppConstants {
     public static final String ACTION_PARSE_ERROR = "com.test.weatherapp.PARSE_ERROR";
     public static final String ACTION_NO_INTERNET_ERROR = "com.test.weatherapp.NO_INTERNET_ERROR";
     public static final String ACTION_BAD_LOCATION_ERROR = "com.test.weatherapp.BAD_LOCATION_ERROR";
+    public static final String ACTION_WEATHER_DATA_LOADED = "com.test.weatherapp.WEATHER_DATA_LOADED";
 
 
     //Weather Api
