@@ -1,5 +1,6 @@
 package com.test.weatherapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     //UI ELEMENTS
     private EditText editText_search;
     private Button button_search;
+    private ProgressDialog progress_spinner;
 
     @Override
     public String getTag() {
@@ -65,6 +67,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
     @Override
     public void onError(String msg) {
+        progress_spinner.dismiss();
     }
 
     @Override
@@ -94,16 +97,27 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
             TextView precip_tv = (TextView) findViewById(R.id.precip_val);
             precip_tv.setText(precip);
         }
+        cursor.close();
+        progress_spinner.dismiss();
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.button_search){
+        switch (view.getId()){
 
-            //TODO: PREVENT REPEATE CLICKS
+            case R.id.button_search :
+                //TODO: PREVENT REPEATED CLICKS
+                //Start service to get weather for today
+                progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to Weather Gods..", true);
+                WeatherAppServiceHelper.getInstance(this).getTodaysWeather(editText_search.getText().toString());
+                break;
 
-            //Start service to get weather for today
-            WeatherAppServiceHelper.getInstance(this).getTodaysWeather(editText_search.getText().toString());
+            case R.id.button_weeks_weather :
+                break;
+
+            default:
+                break;
+
         }
     }
 

@@ -37,9 +37,8 @@ public class WeatherAppContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
-
         queryBuilder.setTables(WeatherAppDBContract.Weather.TABLE_NAME);
 
         int uriType = sURIMatcher.match(uri);
