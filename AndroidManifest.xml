@@ -18,6 +18,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.WeeksWeatherActivity"
+                  android:label="@string/app_name">
+        </activity>
+
         <service android:name=".service.WeatherAppService"/>
 
         <provider

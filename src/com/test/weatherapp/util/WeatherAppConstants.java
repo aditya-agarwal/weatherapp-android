@@ -7,6 +7,8 @@ package com.test.weatherapp.util;
  */
 public class WeatherAppConstants {
 
+    public static final String EXTRAS_LOCATION = "location";
+
     //Actions
     public static final String ACTION_TODAYS_WEATHER ="com.test.weatherapp.TODAYS_WEATHER";
     public static final String ACTION_WEEKS_WEATHER ="com.test.weatherapp.WEEKS_WEATHER";

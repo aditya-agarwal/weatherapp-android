@@ -49,6 +49,9 @@ public class WeatherAppContentProvider extends ContentProvider {
                 queryBuilder.appendWhere(WeatherAppDBContract.Weather._ID + "="
                         + uri.getLastPathSegment());
                 break;
+
+            case WEEKLY_WEATHER:
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }

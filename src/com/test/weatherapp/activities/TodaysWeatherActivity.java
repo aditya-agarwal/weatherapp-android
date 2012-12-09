@@ -1,6 +1,7 @@
 package com.test.weatherapp.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,7 +26,9 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     //UI ELEMENTS
     private EditText editText_search;
     private Button button_search;
+    private Button button_weeks_weather;
     private ProgressDialog progress_spinner;
+    private String location;
 
     @Override
     public String getTag() {
@@ -38,7 +41,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.todays_weather);
 
         mReceiver = new WeatherAppBroadcastReceiver(this);
         IntentFilter filter = new IntentFilter();
@@ -50,6 +53,9 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
         button_search = (Button)findViewById(R.id.button_search);
         button_search.setOnClickListener(this);
+
+        button_weeks_weather = (Button)findViewById(R.id.button_weeks_weather);
+        button_weeks_weather.setOnClickListener(this);
 
         editText_search = (EditText) findViewById(R.id.edit_text_location);
         editText_search.addTextChangedListener(this);
@@ -107,13 +113,23 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
         switch (view.getId()){
 
             case R.id.button_search :
-                //TODO: PREVENT REPEATED CLICKS
+
+                //TODO: DISABLE WEEKS WEATHER BUTTON IN ERROR CASES
+
+                //PREVENT REPEATED CLICKS
+                button_search.setEnabled(false);
+
                 //Start service to get weather for today
+                button_weeks_weather.setEnabled(true);
+                location = editText_search.getText().toString();
                 progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to Weather Gods..", true);
-                WeatherAppServiceHelper.getInstance(this).getTodaysWeather(editText_search.getText().toString());
+                WeatherAppServiceHelper.getInstance(this).getTodaysWeather(location);
                 break;
 
             case R.id.button_weeks_weather :
+                Intent intent = new Intent(this, WeeksWeatherActivity.class);
+                intent.putExtra(WeatherAppConstants.EXTRAS_LOCATION, location);
+                startActivity(intent);
                 break;
 
             default:
@@ -123,9 +139,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     }
 
     @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2){}
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -133,6 +147,5 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     }
 
     @Override
-    public void afterTextChanged(Editable editable) {
-    }
+    public void afterTextChanged(Editable editable) {}
 }

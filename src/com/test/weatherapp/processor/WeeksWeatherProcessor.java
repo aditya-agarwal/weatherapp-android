@@ -19,5 +19,6 @@ public class WeeksWeatherProcessor extends Processor {
     public void getWeather(String location) {
         HttpHandler httpHandler = new HttpHandler();
         JSONObject json = httpHandler.request(createUrl(location, "5"));
+        parse(json);
     }
 }
