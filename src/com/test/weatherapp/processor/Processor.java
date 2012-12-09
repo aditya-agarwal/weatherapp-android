@@ -85,6 +85,7 @@ public abstract class Processor {
                         value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION, description);
                         mContext.getContentResolver().insert(WeatherAppDBContract.Weather.CONTENT_URI, value);
                  }
+                broadCastIntent(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
             }
         } catch (JSONException e) {
             broadCastIntent(WeatherAppConstants.ACTION_PARSE_ERROR);

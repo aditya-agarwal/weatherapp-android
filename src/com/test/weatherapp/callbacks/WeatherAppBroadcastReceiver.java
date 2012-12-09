@@ -13,6 +13,12 @@ import com.test.weatherapp.util.WeatherAppConstants;
  * Date: 12/9/12
  */
 public class WeatherAppBroadcastReceiver extends BroadcastReceiver {
+
+    private WeatherAppServiceCallback mCallback;
+
+    public WeatherAppBroadcastReceiver (WeatherAppServiceCallback callback){
+         mCallback = callback;
+    }
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -27,6 +33,11 @@ public class WeatherAppBroadcastReceiver extends BroadcastReceiver {
 
         else if(intent.getAction().equals(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR)){
             ToolKit.showToastWithError(R.string.bad_location,context);
+            mCallback.onError(context.getString(R.string.bad_location));
+        }
+
+        else if(intent.getAction().equals(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED)){
+            mCallback.onComplete();
         }
     }
 }
