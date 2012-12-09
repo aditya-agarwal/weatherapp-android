@@ -1,5 +1,6 @@
 package com.test.weatherapp.processor;
 
+import android.content.Context;
 import com.test.weatherapp.util.WeatherAppConstants;
 
 /**
@@ -9,12 +10,12 @@ import com.test.weatherapp.util.WeatherAppConstants;
  */
 public class ProcessorFactory {
 
-    public static Processor createProcessor(String action){
+    public static Processor createProcessor(String action, Context context){
 
         if(action.equals(WeatherAppConstants.ACTION_WEEKS_WEATHER)){
-            return new WeeksWeatherProcessor();
+            return new WeeksWeatherProcessor(context);
         } else if(action.equals(WeatherAppConstants.ACTION_TODAYS_WEATHER)) {
-            return new TodaysWeatherProcessor();
+            return new TodaysWeatherProcessor(context);
         }
         return null;
     }

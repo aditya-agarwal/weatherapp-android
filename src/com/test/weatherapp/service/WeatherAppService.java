@@ -19,7 +19,7 @@ public class WeatherAppService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String action = intent.getStringExtra("action");
         String location = intent.getStringExtra("location");
-        ProcessorFactory.createProcessor(action).getWeather(location);
+        ProcessorFactory.createProcessor(action, getApplicationContext()).getWeather(location);
 
         //TODO: Broadcast intent
     }

@@ -1,5 +1,6 @@
 package com.test.weatherapp.processor;
 
+import android.content.Context;
 import com.test.weatherapp.http.HttpHandler;
 import org.json.JSONObject;
 
@@ -10,11 +11,15 @@ import org.json.JSONObject;
  */
 public class TodaysWeatherProcessor extends Processor {
 
+    protected TodaysWeatherProcessor(Context context) {
+        super(context);
+    }
+
     @Override
     public void getWeather(String location) {
         HttpHandler httpHandler = new HttpHandler();
-        JSONObject json = httpHandler.request(createUrl(location, "1"));
-
+        JSONObject json = httpHandler.request(createUrl(location, "2"));
+        parse(json);
         //TODO: get json parse it and store in db and update callabck
     }
 

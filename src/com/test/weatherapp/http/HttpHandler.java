@@ -28,8 +28,6 @@ public class HttpHandler {
         HttpPost httpPost = new HttpPost(url);
 
         try {
-
-            httpPost.setHeader("Content-Type", "application/json");
             HttpResponse response = httpClient.execute(httpPost);
 
             HttpEntity entity = response.getEntity();

@@ -1,8 +1,11 @@
 package com.test.weatherapp.activities;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import com.test.weatherapp.R;
+import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
+import com.test.weatherapp.util.WeatherAppConstants;
 
 public class TodaysWeatherActivity extends BaseActivity {
 
@@ -22,5 +25,15 @@ public class TodaysWeatherActivity extends BaseActivity {
         setContentView(R.layout.main);
 
         WeatherAppServiceHelper.getInstance(this).getTodaysWeather("Farmington Hills");
+
+        registerReceiver(new WeatherAppBroadcastReceiver(),new IntentFilter(WeatherAppConstants.ACTION_PARSE_ERROR));
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //TODO: UNREGISTER RECEIVER
+    }
+
+
 }

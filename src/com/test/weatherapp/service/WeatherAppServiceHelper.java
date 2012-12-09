@@ -2,11 +2,6 @@ package com.test.weatherapp.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.test.weatherapp.R;
 import com.test.weatherapp.util.ToolKit;
 import com.test.weatherapp.util.WeatherAppConstants;
@@ -57,27 +52,14 @@ public class WeatherAppServiceHelper {
 
     private boolean startService(String action, String location){
 
-        if(ToolKit.isInternetAvailable(mContext)){
+        if(!ToolKit.isInternetAvailable(mContext)){
             intent = new Intent(mContext, WeatherAppService.class);
             intent.putExtra("action", action);
             intent.putExtra("location", location);
             mContext.startService(intent);
             return true;
         }else {
-            LayoutInflater inflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.toast_message, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.text);
-            text.setText(R.string.no_internet_available);
-
-            Toast toast = new Toast(mContext);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-
-            toast.show();
+            ToolKit.showToastWithError(R.string.no_internet_available, mContext);
             return false;
         }
     }

@@ -1,5 +1,6 @@
 package com.test.weatherapp.processor;
 
+import android.content.Context;
 import com.test.weatherapp.http.HttpHandler;
 import org.json.JSONObject;
 
@@ -9,6 +10,10 @@ import org.json.JSONObject;
  * Date: 12/8/12
  */
 public class WeeksWeatherProcessor extends Processor {
+
+    protected WeeksWeatherProcessor(Context context) {
+        super(context);
+    }
 
     @Override
     public void getWeather(String location) {
