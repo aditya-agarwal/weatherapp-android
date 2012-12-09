@@ -2,7 +2,6 @@ package com.test.weatherapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.test.weatherapp.R;
-import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
 import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
@@ -21,7 +19,6 @@ import com.test.weatherapp.util.WeatherAppConstants;
 public class TodaysWeatherActivity extends BaseActivity implements WeatherAppServiceCallback, View.OnClickListener, TextWatcher {
 
     private static final String LOG_TAG = "CurrentWeatherActivity";
-    private WeatherAppBroadcastReceiver mReceiver;
 
     //UI ELEMENTS
     private EditText editText_search;
@@ -35,6 +32,11 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
         return LOG_TAG;
     }
 
+    @Override
+    public WeatherAppServiceCallback getServiceCallback() {
+        return this;
+    }
+
     /**
      * Called when the activity is first created.
      */
@@ -42,14 +44,6 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todays_weather);
-
-        mReceiver = new WeatherAppBroadcastReceiver(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_NO_INTERNET_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
-        registerReceiver(mReceiver, filter);
 
         button_search = (Button)findViewById(R.id.button_search);
         button_search.setOnClickListener(this);
@@ -59,17 +53,6 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
         editText_search = (EditText) findViewById(R.id.edit_text_location);
         editText_search.addTextChangedListener(this);
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -127,9 +110,11 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
                 break;
 
             case R.id.button_weeks_weather :
+
                 Intent intent = new Intent(this, WeeksWeatherActivity.class);
                 intent.putExtra(WeatherAppConstants.EXTRAS_LOCATION, location);
                 startActivity(intent);
+
                 break;
 
             default:

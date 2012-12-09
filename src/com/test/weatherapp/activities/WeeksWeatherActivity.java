@@ -1,12 +1,11 @@
 package com.test.weatherapp.activities;
 
-import android.content.IntentFilter;
+import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ListView;
 import com.test.weatherapp.R;
 import com.test.weatherapp.adapters.WeeksWeatherListAdapter;
-import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
 import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
@@ -21,9 +20,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
 
     private static final String LOG_TAG = "WeeksWeatherActivity";
     private String location;
-
-    private WeatherAppBroadcastReceiver mReceiver;
-
+    private ProgressDialog progress_spinner;
 
     @Override
     public String getTag() {
@@ -31,38 +28,33 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
     }
 
     @Override
+    public WeatherAppServiceCallback getServiceCallback() {
+        return this;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weeks_weather);
-
-        mReceiver = new WeatherAppBroadcastReceiver(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_NO_INTERNET_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
-        filter.addAction(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
-        registerReceiver(mReceiver, filter);
-
         Bundle extras = getIntent().getExtras();
 
-        if(extras !=null)
-        {
+        if(extras !=null) {
             location = extras.getString(WeatherAppConstants.EXTRAS_LOCATION);
         }
 
         WeatherAppServiceHelper.getInstance(this).getWeeklyWeather(location);
-
+        progress_spinner = ProgressDialog.show(this, "Please wait", "Getting this weeks weather ..", true);
     }
 
     @Override
-    public void onPause(){
-        super.onPause();
-        unregisterReceiver(mReceiver);
+    public void onStop(){
+        super.onStop();
+        WeatherAppServiceHelper.getInstance(this).stopService();
     }
 
     @Override
     public void onError(String msg) {
-
+        progress_spinner.dismiss();
     }
 
     @Override
@@ -71,6 +63,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
         String [] projection = new String[]{
                 WeatherAppDBContract.Weather._ID,
                 WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
+                WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL,
                 WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
                 WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
                 WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
@@ -81,6 +74,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
 
         WeeksWeatherListAdapter adapter = new WeeksWeatherListAdapter(this,cursor);
         weeksWeatherList.setAdapter(adapter);
+        progress_spinner.dismiss();
 
     }
 }

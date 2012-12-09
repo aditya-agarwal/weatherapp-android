@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.test.weatherapp.R;
 import com.test.weatherapp.database.WeatherAppDBContract;
@@ -18,10 +19,13 @@ import com.test.weatherapp.database.WeatherAppDBContract;
 public class WeeksWeatherListAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
+    private final ImageDownloader imageDownloader = new ImageDownloader();
+
 
     public WeeksWeatherListAdapter(Context context, Cursor c) {
         super(context, c);
         mInflater=LayoutInflater.from(context);
+        imageDownloader.setMode(ImageDownloader.Mode.CORRECT);
     }
 
     public WeeksWeatherListAdapter(Context context, Cursor c, boolean autoRequery) {
@@ -41,6 +45,7 @@ public class WeeksWeatherListAdapter extends CursorAdapter {
         String date = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DATE));
         String desc = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION));
         String precip = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION));
+        String icon_url = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL));
 
         TextView temp_tv = (TextView) view.findViewById(R.id.temperature_val);
         temp_tv.setText(temperature);
@@ -51,5 +56,7 @@ public class WeeksWeatherListAdapter extends CursorAdapter {
         TextView precip_tv = (TextView) view.findViewById(R.id.precip_val);
         precip_tv.setText(precip);
 
+        ImageView icon_view = (ImageView) view.findViewById(R.id.weather_icon);
+        imageDownloader.download(icon_url, (ImageView) icon_view);
     }
 }

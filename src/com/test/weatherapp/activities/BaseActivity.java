@@ -1,8 +1,13 @@
 package com.test.weatherapp.activities;
 
 import android.app.Activity;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
+import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.util.WeatherAppConstants;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
@@ -11,20 +16,32 @@ import android.util.Log;
 public abstract class BaseActivity extends Activity {
 
     public abstract String getTag();
+    public abstract WeatherAppServiceCallback getServiceCallback();
 
     private static final String MARKER_START = "-_-_-_-_-_-_-_-_-_-_-_";
     private static final String MARKER_END = " _-_-_-_-_-_-_-_-_-_-_-";
+
+    private WeatherAppBroadcastReceiver mReceiver;
+    private IntentFilter filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mark("onCreate");
         super.onCreate(savedInstanceState);
+
+        mReceiver = new WeatherAppBroadcastReceiver(getServiceCallback());
+        filter = new IntentFilter();
+        filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
+        filter.addAction(WeatherAppConstants.ACTION_NO_INTERNET_ERROR);
+        filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
+        filter.addAction(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
     }
 
     @Override
     protected void onPause() {
         mark("onPause");
         super.onPause();
+        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -49,6 +66,7 @@ public abstract class BaseActivity extends Activity {
     protected void onResume() {
         mark("onResume");
         super.onResume();
+        registerReceiver(mReceiver, filter);
     }
 
     @Override
