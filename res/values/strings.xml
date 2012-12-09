@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">weatherapp-android</string>
+    <string name="app_name">weather-app-android</string>
+    <string name="no_internet_available"> No Internet Available</string>
 </resources>
