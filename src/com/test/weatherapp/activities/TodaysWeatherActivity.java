@@ -24,7 +24,7 @@ public class TodaysWeatherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("Farmington Hills");
+        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("Los Angeles");
 
         registerReceiver(new WeatherAppBroadcastReceiver(),new IntentFilter(WeatherAppConstants.ACTION_PARSE_ERROR));
     }

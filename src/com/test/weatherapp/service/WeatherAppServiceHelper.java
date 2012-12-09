@@ -52,7 +52,7 @@ public class WeatherAppServiceHelper {
 
     private boolean startService(String action, String location){
 
-        if(!ToolKit.isInternetAvailable(mContext)){
+        if(ToolKit.isInternetAvailable(mContext)){
             intent = new Intent(mContext, WeatherAppService.class);
             intent.putExtra("action", action);
             intent.putExtra("location", location);

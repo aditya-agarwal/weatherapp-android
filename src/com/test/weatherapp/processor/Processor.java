@@ -1,7 +1,9 @@
 package com.test.weatherapp.processor;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.util.WeatherAppConstants;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -43,28 +45,42 @@ public abstract class Processor {
 
     public void parse(JSONObject object) {
         try {
+            mContext.getContentResolver().delete(WeatherAppDBContract.Weather.CONTENT_URI, null,null);
             JSONObject data = object.getJSONObject(WeatherAppConstants.TAG_DATA);
             JSONArray weather = data.getJSONArray(WeatherAppConstants.TAG_WEATHER);
 
 
             for(int i = 0; i < weather.length(); i++){
-                JSONObject c = weather.getJSONObject(i);
+                JSONObject weatherObj = weather.getJSONObject(i);
 
+                String date = weatherObj.getString(WeatherAppConstants.TAG_DATE);
+                String tempMax = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MAX);
+                String tempMin = weatherObj.getString(WeatherAppConstants.TAG_TEMP_MIN);
+                String precip = weatherObj.getString(WeatherAppConstants.TAG_PRECIP);
 
-                String date = c.getString(WeatherAppConstants.TAG_DATE);
-                String tempMax = c.getString(WeatherAppConstants.TAG_TEMP_MAX);
-                String tempMin = c.getString(WeatherAppConstants.TAG_TEMP_MIN);
-                String precip = c.getString(WeatherAppConstants.TAG_PRECIP);
-
-
-
-                JSONArray descArr = c.getJSONArray(WeatherAppConstants.TAG_WEATHER_DESC);
+                //Description
+                JSONArray descArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_WEATHER_DESC);
                 JSONObject descObj = descArr.getJSONObject(0);
                 String description = descObj.getString(WeatherAppConstants.TAG_VALUE);
 
-                JSONArray urlArr = c.getJSONArray(WeatherAppConstants.TAG_ICON_URL);
+                //Icon URL
+                JSONArray urlArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_ICON_URL);
                 JSONObject urlObj = urlArr.getJSONObject(0);
                 String iconUrl = urlObj.getString(WeatherAppConstants.TAG_VALUE);
+
+//                //Location
+//                JSONArray requestArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_REQUEST);
+//                JSONObject requestObj = urlArr.getJSONObject(0);
+//                String location = urlObj.getString(WeatherAppConstants.TAG_QUERY);
+
+                ContentValues value = new ContentValues();
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DATE, date);
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_LOCATION, "loction");
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE, tempMax);
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION, precip);
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL, iconUrl);
+                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION, description);
+                mContext.getContentResolver().insert(WeatherAppDBContract.Weather.CONTENT_URI, value);
             }
         } catch (JSONException e) {
             Intent broadcastIntent = new Intent();

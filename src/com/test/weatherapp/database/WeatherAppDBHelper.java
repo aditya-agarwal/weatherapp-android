@@ -14,14 +14,14 @@ public class WeatherAppDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Weather.db";
 
-    private static final String SQL_CREATE_TABLE_WEATHER = " CREATE TABLE " + WeatherAppDBContract.Weather.TABLE_NAME +
+    public static final String SQL_CREATE_TABLE_WEATHER = " CREATE TABLE " + WeatherAppDBContract.Weather.TABLE_NAME +
             " (" +
             WeatherAppDBContract.Weather._ID + " INTEGER PRIMARY KEY," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_DATE + " TEXT NOT NULL" +
-            WeatherAppDBContract.Weather.COLUMN_NAME_LOCATION + " TEXT NOT NULL" +
-            WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE + " INTEGER NOT NULL" +
-            WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION + " TEXT NOT NULL" +
-            WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL + " TEXT NOT NULL" +
+            WeatherAppDBContract.Weather.COLUMN_NAME_DATE + " TEXT NOT NULL," +
+            WeatherAppDBContract.Weather.COLUMN_NAME_LOCATION + " TEXT NOT NULL," +
+            WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE + " INTEGER NOT NULL," +
+            WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION + " TEXT NOT NULL," +
+            WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL + " TEXT NOT NULL," +
             WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION + " INTEGER NOT NULL"
             + " )" ;
 

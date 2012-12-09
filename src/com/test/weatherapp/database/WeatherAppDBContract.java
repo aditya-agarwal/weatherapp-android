@@ -1,5 +1,6 @@
 package com.test.weatherapp.database;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -18,6 +19,9 @@ public class WeatherAppDBContract {
      * Inner class defining Database table Weather
      */
     public static class Weather implements BaseColumns{
+
+        public static final Uri CONTENT_URI = Uri.parse("content://" + WeatherAppContentProvider.CONTENT_AUTHORITY
+                + "/" + WeatherAppContentProvider.WEATHER_BASE_PATH);
         public static final String TABLE_NAME = "weather";
         // DATE FORMAT YYYY-MM-DD
         public static final String COLUMN_NAME_DATE = "date";

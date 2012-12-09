@@ -19,5 +19,10 @@
         </activity>
 
         <service android:name=".service.WeatherAppService"/>
+
+        <provider
+                android:name=".database.WeatherAppContentProvider"
+                android:authorities="com.test.weatherapp.provider" >
+        </provider>
     </application>
 </manifest> 
