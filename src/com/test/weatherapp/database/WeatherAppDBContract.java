@@ -22,6 +22,11 @@ public class WeatherAppDBContract {
 
         public static final Uri CONTENT_URI = Uri.parse("content://" + WeatherAppContentProvider.CONTENT_AUTHORITY
                 + "/" + WeatherAppContentProvider.WEATHER_BASE_PATH);
+
+        public static final Uri CONTENT_URI_TODAYS_WEATHER = Uri.parse("content://" + WeatherAppContentProvider.CONTENT_AUTHORITY
+                + "/" + WeatherAppContentProvider.WEATHER_BASE_PATH + "/" + 1);
+
+
         public static final String TABLE_NAME = "weather";
         // DATE FORMAT YYYY-MM-DD
         public static final String COLUMN_NAME_DATE = "date";

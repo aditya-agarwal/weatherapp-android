@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 /**
@@ -35,8 +36,32 @@ public class WeatherAppContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        return null;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+
+        queryBuilder.setTables(WeatherAppDBContract.Weather.TABLE_NAME);
+
+        int uriType = sURIMatcher.match(uri);
+        switch (uriType) {
+
+            case TODAYS_WEATHER:
+
+                queryBuilder.appendWhere(WeatherAppDBContract.Weather._ID + "="
+                        + uri.getLastPathSegment());
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+
+        SQLiteDatabase db = mDBHelper.getWritableDatabase();
+        Cursor cursor = queryBuilder.query(db, projection, selection,
+                selectionArgs, null, null, sortOrder);
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        return cursor;
+
     }
 
     @Override
@@ -56,15 +81,13 @@ public class WeatherAppContentProvider extends ContentProvider {
         switch (uriType) {
             //TODO : COMBINE CASES BELOW
             case WEEKLY_WEATHER:
-                id = db.insert(WeatherAppDBContract.Weather.TABLE_NAME, null, contentValues);
-                break;
             case TODAYS_WEATHER:
                 id = db.insert(WeatherAppDBContract.Weather.TABLE_NAME, null, contentValues);
+                getContext().getContentResolver().notifyChange(WeatherAppDBContract.Weather.CONTENT_URI_TODAYS_WEATHER, null);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri, null);
         return Uri.parse(WEATHER_BASE_PATH + "/" + id);
     }
 
