@@ -72,14 +72,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
     @Override
     public void onComplete() {
 
-        String [] projection = new String[]{
-                WeatherAppDBContract.Weather._ID,
-                WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
-                WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL,
-                WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
-                WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
-                WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
-        };
+
 
         cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI, projection, null, null, null);
         ListView weeksWeatherList = (ListView)findViewById(R.id.weeks_weather_list_view);

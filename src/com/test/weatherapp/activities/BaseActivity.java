@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
 import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.util.WeatherAppConstants;
 
 /**
@@ -23,6 +24,16 @@ public abstract class BaseActivity extends Activity {
 
     private WeatherAppBroadcastReceiver mReceiver;
     private IntentFilter filter;
+
+    //projection for cursor
+    protected String [] projection = new String[]{
+            WeatherAppDBContract.Weather._ID,
+            WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
+            WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL,
+            WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
+            WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
+            WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

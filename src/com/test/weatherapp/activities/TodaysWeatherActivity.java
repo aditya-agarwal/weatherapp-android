@@ -62,12 +62,6 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
     @Override
     public void onComplete() {
-        String [] projection = new String[]{
-                WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
-                WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
-                WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
-                WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
-        };
 
         Cursor cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI_TODAYS_WEATHER, projection, null, null, null);
         if(cursor.moveToFirst()){
