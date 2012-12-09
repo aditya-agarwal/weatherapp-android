@@ -1,16 +1,30 @@
 package com.test.weatherapp.activities;
 
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import com.test.weatherapp.R;
 import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
+import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
 import com.test.weatherapp.util.WeatherAppConstants;
 
-public class TodaysWeatherActivity extends BaseActivity {
+public class TodaysWeatherActivity extends BaseActivity implements WeatherAppServiceCallback, View.OnClickListener, TextWatcher {
 
     private static final String LOG_TAG = "CurrentWeatherActivity";
     private WeatherAppBroadcastReceiver mReceiver;
+
+    //UI ELEMENTS
+    private EditText editText_search;
+    private Button button_search;
+
     @Override
     public String getTag() {
         return LOG_TAG;
@@ -24,18 +38,86 @@ public class TodaysWeatherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        WeatherAppServiceHelper.getInstance(this).getTodaysWeather("asdkjf");
-
-        mReceiver = new WeatherAppBroadcastReceiver();
+        mReceiver = new WeatherAppBroadcastReceiver(this);
         IntentFilter filter = new IntentFilter();
         filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
         filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
-        registerReceiver(mReceiver,filter);
+        filter.addAction(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
+        registerReceiver(mReceiver, filter);
+
+        button_search = (Button)findViewById(R.id.button_search);
+        button_search.setOnClickListener(this);
+
+        editText_search = (EditText) findViewById(R.id.edit_text_location);
+        editText_search.addTextChangedListener(this);
     }
 
     @Override
     public void onResume(){
         super.onResume();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
         unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onError(String msg) {
+    }
+
+    @Override
+    public void onComplete() {
+        String [] projection = new String[]{
+                WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
+                WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
+                WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
+                WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
+        };
+
+        Cursor cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI_TODAYS_WEATHER, projection, null, null, null);
+        if(cursor.moveToFirst()){
+
+            //TODO: CHANGE TO HASHMAP
+            String temperature = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE));
+            String date = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DATE));
+            String desc = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION));
+            String precip = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION));
+
+            TextView temp_tv = (TextView) findViewById(R.id.temperature_val);
+            temp_tv.setText(temperature);
+            TextView date_tv = (TextView) findViewById(R.id.date_val);
+            date_tv.setText(date);
+            TextView desc_tv = (TextView) findViewById(R.id.desc_val);
+            desc_tv.setText(desc);
+            TextView precip_tv = (TextView) findViewById(R.id.precip_val);
+            precip_tv.setText(precip);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.button_search){
+
+            //TODO: PREVENT REPEATE CLICKS
+
+            //Start service to get weather for today
+            WeatherAppServiceHelper.getInstance(this).getTodaysWeather(editText_search.getText().toString());
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+       button_search.setEnabled(true);
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
     }
 }

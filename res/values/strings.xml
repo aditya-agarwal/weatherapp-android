@@ -4,4 +4,15 @@
     <string name="no_internet_available"> No Internet Available</string>
     <string name="parsing_error"> Parsing Error </string>
     <string name="bad_location"> Incorrect Location Please Try Again </string>
+
+    <string name="button_search">Search</string>
+    <string name="button_weeks_weather">Weeks Weather</string>
+    <string name="txt_view_temp">Temperature : </string>
+    <string name="txt_view_precip">Precipitation : </string>
+    <string name="txt_view_date">Date : </string>
+    <string name="txt_view_desc">Description : </string>
+
+
+
+    <string name="hint_location">City or Zip</string>
 </resources>
