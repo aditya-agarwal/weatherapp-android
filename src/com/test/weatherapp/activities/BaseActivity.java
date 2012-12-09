@@ -91,6 +91,7 @@ public abstract class BaseActivity extends Activity {
     protected void onDestroy() {
         mark("onDestroy");
         super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 
     /**

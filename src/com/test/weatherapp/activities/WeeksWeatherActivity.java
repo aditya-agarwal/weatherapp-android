@@ -21,6 +21,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
     private static final String LOG_TAG = "WeeksWeatherActivity";
     private String location;
     private ProgressDialog progress_spinner;
+    private Cursor cursor;
 
     @Override
     public String getTag() {
@@ -41,15 +42,26 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
         if(extras !=null) {
             location = extras.getString(WeatherAppConstants.EXTRAS_LOCATION);
         }
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
         WeatherAppServiceHelper.getInstance(this).getWeeklyWeather(location);
         progress_spinner = ProgressDialog.show(this, "Please wait", "Getting this weeks weather ..", true);
+    }
+
+    @Override
+    public void onPause(){
+        super.onResume();
+        progress_spinner.dismiss();
     }
 
     @Override
     public void onStop(){
         super.onStop();
         WeatherAppServiceHelper.getInstance(this).stopService();
+        cursor.close();
     }
 
     @Override
@@ -69,7 +81,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
                 WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION
         };
 
-        Cursor cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI, projection, null, null, null);
+        cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI, projection, null, null, null);
         ListView weeksWeatherList = (ListView)findViewById(R.id.weeks_weather_list_view);
 
         WeeksWeatherListAdapter adapter = new WeeksWeatherListAdapter(this,cursor);
