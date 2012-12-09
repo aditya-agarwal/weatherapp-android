@@ -3,7 +3,9 @@ package com.test.weatherapp.activities;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.ListView;
 import com.test.weatherapp.R;
+import com.test.weatherapp.adapters.WeeksWeatherListAdapter;
 import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
 import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
@@ -67,6 +69,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
     public void onComplete() {
 
         String [] projection = new String[]{
+                WeatherAppDBContract.Weather._ID,
                 WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE,
                 WeatherAppDBContract.Weather.COLUMN_NAME_DATE,
                 WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION,
@@ -74,7 +77,10 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
         };
 
         Cursor cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI, projection, null, null, null);
+        ListView weeksWeatherList = (ListView)findViewById(R.id.weeks_weather_list_view);
 
+        WeeksWeatherListAdapter adapter = new WeeksWeatherListAdapter(this,cursor);
+        weeksWeatherList.setAdapter(adapter);
 
     }
 }

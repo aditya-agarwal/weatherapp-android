@@ -7,6 +7,8 @@
             android:id="@+id/weeks_weather_list_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#3A5784"
+            android:cacheColorHint="@android:color/transparent"
             />
 
 </LinearLayout>
