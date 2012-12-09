@@ -25,13 +25,22 @@ public class WeatherAppDBContract {
         public static final String TABLE_NAME = "weather";
         // DATE FORMAT YYYY-MM-DD
         public static final String COLUMN_NAME_DATE = "date";
-        public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_TEMPERATURE = "temperature";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_ICON_URL = "icon_url";
         public static final String COLUMN_NAME_PRECIPITATION = "precipitation";
 
+        public static final String SQL_CREATE_TABLE_WEATHER = " CREATE TABLE IF NOT EXISTS " + WeatherAppDBContract.Weather.TABLE_NAME +
+                " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                COLUMN_NAME_DATE + " TEXT NOT NULL," +
+                COLUMN_NAME_TEMPERATURE + " INTEGER NOT NULL," +
+                COLUMN_NAME_DESCRIPTION + " TEXT NOT NULL," +
+                COLUMN_NAME_ICON_URL + " TEXT NOT NULL," +
+                COLUMN_NAME_PRECIPITATION + " INTEGER NOT NULL"
+                + " )" ;
+
+        public static final String SQL_DELETE_WEATHER =
+                "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
-
-
 }

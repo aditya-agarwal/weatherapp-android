@@ -28,17 +28,6 @@ public class WeatherAppContentProvider extends ContentProvider {
 
     private WeatherAppDBHelper mDBHelper;
 
-    public static final String SQL_CREATE_TABLE_WEATHER = " CREATE TABLE IF NOT EXISTS " + WeatherAppDBContract.Weather.TABLE_NAME +
-            " (" +
-            WeatherAppDBContract.Weather._ID + " INTEGER PRIMARY KEY," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_DATE + " TEXT NOT NULL," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_LOCATION + " TEXT NOT NULL," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE + " INTEGER NOT NULL," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION + " TEXT NOT NULL," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL + " TEXT NOT NULL," +
-            WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION + " INTEGER NOT NULL"
-            + " )" ;
-
     @Override
     public boolean onCreate() {
         mDBHelper = new WeatherAppDBHelper(getContext());
@@ -61,8 +50,9 @@ public class WeatherAppContentProvider extends ContentProvider {
 
         int uriType = sURIMatcher.match(uri);
         final SQLiteDatabase db = mDBHelper.getWritableDatabase();
-        db.execSQL(SQL_CREATE_TABLE_WEATHER);
+        db.execSQL(WeatherAppDBContract.Weather.SQL_CREATE_TABLE_WEATHER);
         long id = 0;
+
         switch (uriType) {
             //TODO : COMBINE CASES BELOW
             case WEEKLY_WEATHER:

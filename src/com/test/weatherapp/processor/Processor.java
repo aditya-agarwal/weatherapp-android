@@ -45,10 +45,10 @@ public abstract class Processor {
 
     public void parse(JSONObject object) {
         try {
+            //Delete previously stored values
             mContext.getContentResolver().delete(WeatherAppDBContract.Weather.CONTENT_URI, null,null);
             JSONObject data = object.getJSONObject(WeatherAppConstants.TAG_DATA);
             JSONArray weather = data.getJSONArray(WeatherAppConstants.TAG_WEATHER);
-
 
             for(int i = 0; i < weather.length(); i++){
                 JSONObject weatherObj = weather.getJSONObject(i);
@@ -68,14 +68,8 @@ public abstract class Processor {
                 JSONObject urlObj = urlArr.getJSONObject(0);
                 String iconUrl = urlObj.getString(WeatherAppConstants.TAG_VALUE);
 
-//                //Location
-//                JSONArray requestArr = weatherObj.getJSONArray(WeatherAppConstants.TAG_REQUEST);
-//                JSONObject requestObj = urlArr.getJSONObject(0);
-//                String location = urlObj.getString(WeatherAppConstants.TAG_QUERY);
-
                 ContentValues value = new ContentValues();
                 value.put(WeatherAppDBContract.Weather.COLUMN_NAME_DATE, date);
-                value.put(WeatherAppDBContract.Weather.COLUMN_NAME_LOCATION, "loction");
                 value.put(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE, tempMax);
                 value.put(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION, precip);
                 value.put(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL, iconUrl);
