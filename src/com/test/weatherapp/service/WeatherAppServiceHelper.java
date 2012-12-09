@@ -2,7 +2,6 @@ package com.test.weatherapp.service;
 
 import android.content.Context;
 import android.content.Intent;
-import com.test.weatherapp.R;
 import com.test.weatherapp.util.ToolKit;
 import com.test.weatherapp.util.WeatherAppConstants;
 
@@ -59,7 +58,9 @@ public class WeatherAppServiceHelper {
             mContext.startService(intent);
             return true;
         }else {
-            ToolKit.showToastWithError(R.string.no_internet_available, mContext);
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(WeatherAppConstants.ACTION_NO_INTERNET_ERROR);
+            mContext.sendBroadcast(broadcastIntent);
             return false;
         }
     }

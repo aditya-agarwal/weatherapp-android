@@ -43,6 +43,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
         mReceiver = new WeatherAppBroadcastReceiver(this);
         IntentFilter filter = new IntentFilter();
         filter.addAction(WeatherAppConstants.ACTION_PARSE_ERROR);
+        filter.addAction(WeatherAppConstants.ACTION_NO_INTERNET_ERROR);
         filter.addAction(WeatherAppConstants.ACTION_BAD_LOCATION_ERROR);
         filter.addAction(WeatherAppConstants.ACTION_WEATHER_DATA_LOADED);
         registerReceiver(mReceiver, filter);

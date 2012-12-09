@@ -25,6 +25,7 @@ public class WeatherAppBroadcastReceiver extends BroadcastReceiver {
         //TODO: CHANGE TO HASHMAP
         if(intent.getAction().equals(WeatherAppConstants.ACTION_NO_INTERNET_ERROR)){
             ToolKit.showToastWithError(R.string.no_internet_available,context);
+            mCallback.onError(context.getString(R.string.no_internet_available));
         }
 
         else if(intent.getAction().equals(WeatherAppConstants.ACTION_PARSE_ERROR)){
