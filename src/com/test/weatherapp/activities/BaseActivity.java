@@ -102,7 +102,13 @@ public abstract class BaseActivity extends Activity {
     protected void onDestroy() {
         mark("onDestroy");
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+
+        try{
+            unregisterReceiver(mReceiver);
+        } catch (IllegalArgumentException e){
+            //IGNORE : If receiver is already unregister illegal argument exception is thrown
+        }
+
     }
 
     /**

@@ -104,8 +104,6 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
             case R.id.button_search :
 
-                //TODO: DISABLE WEEKS WEATHER BUTTON IN ERROR CASES
-
                 //PREVENT REPEATED CLICKS
                 button_search.setEnabled(false);
 
@@ -121,12 +119,10 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
                 Intent intent = new Intent(this, WeeksWeatherActivity.class);
                 intent.putExtra(WeatherAppConstants.EXTRAS_LOCATION, location);
                 startActivity(intent);
-
                 break;
 
             default:
                 break;
-
         }
     }
 
