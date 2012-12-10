@@ -117,7 +117,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppPro
                 //Start service to get weather for today
                 button_weeks_weather.setEnabled(true);
                 location = editText_search.getText().toString();
-                progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to The Weather Gods..", true);
+                progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to The Weather God..", true);
                 WeatherAppServiceHelper.getInstance(this).getTodaysWeather(location);
                 break;
 
