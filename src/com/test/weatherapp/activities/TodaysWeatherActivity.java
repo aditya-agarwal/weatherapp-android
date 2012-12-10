@@ -9,8 +9,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.test.weatherapp.R;
+import com.test.weatherapp.adapters.ImageDownloader;
 import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
@@ -26,6 +28,8 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     private Button button_weeks_weather;
     private ProgressDialog progress_spinner;
     private String location;
+
+    private final ImageDownloader imageDownloader = new ImageDownloader();
 
     @Override
     public String getTag() {
@@ -53,6 +57,8 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
 
         editText_search = (EditText) findViewById(R.id.edit_text_location);
         editText_search.addTextChangedListener(this);
+
+        imageDownloader.setMode(ImageDownloader.Mode.CORRECT);
     }
 
     @Override
@@ -73,6 +79,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
             String date = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DATE));
             String desc = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION));
             String precip = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_PRECIPITATION));
+            String icon_url = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_ICON_URL));
 
             TextView temp_tv = (TextView) findViewById(R.id.temperature_val);
             temp_tv.setText(temperature);
@@ -82,6 +89,10 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
             desc_tv.setText(desc);
             TextView precip_tv = (TextView) findViewById(R.id.precip_val);
             precip_tv.setText(precip);
+
+            ImageView icon_view = (ImageView) findViewById(R.id.weather_icon);
+            imageDownloader.download(icon_url, (ImageView) icon_view);
+
         }
         cursor.close();
         progress_spinner.dismiss();
