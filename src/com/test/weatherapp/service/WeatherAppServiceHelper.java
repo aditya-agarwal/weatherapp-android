@@ -10,7 +10,7 @@ import com.test.weatherapp.util.WeatherAppConstants;
  * User: Aditya Agarwal
  * Date: 12/8/12
  *
- * Handles service to fetch weather
+ * Singleton class to prepare and send service request
  */
 public class WeatherAppServiceHelper {
 
@@ -36,7 +36,7 @@ public class WeatherAppServiceHelper {
     }
 
     /**
-     * Helper method to start service to get todays weather
+     * Helper method to start service to get today's weather
      */
     public boolean getTodaysWeather(String location){
         return startService(WeatherAppConstants.ACTION_TODAYS_WEATHER, location);

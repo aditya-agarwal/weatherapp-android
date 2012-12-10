@@ -18,9 +18,16 @@ import java.io.InputStreamReader;
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/8/12
+ *
+ * Responsible for making the http calls.
  */
 public class HttpHandler {
 
+    /**
+     * Makes http request call
+     * @param url
+     * @return
+     */
     public JSONObject request(String url) {
 
         JSONObject json = null;
@@ -33,7 +40,6 @@ public class HttpHandler {
             HttpEntity entity = response.getEntity();
 
             if (entity != null) {
-                // A Simple JSON Response Read
                 InputStream instream = entity.getContent();
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(instream));
@@ -42,7 +48,6 @@ public class HttpHandler {
                 while ((line = reader.readLine()) != null) {
                     total.append(line);
                 }
-
                 json = new JSONObject(total.toString());
             }
 
@@ -55,6 +60,4 @@ public class HttpHandler {
         }
         return json;
     }
-
-
 }

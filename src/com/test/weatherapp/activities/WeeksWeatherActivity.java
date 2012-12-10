@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import com.test.weatherapp.R;
 import com.test.weatherapp.adapters.WeeksWeatherListAdapter;
-import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.callbacks.WeatherAppProcessorCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
 import com.test.weatherapp.util.WeatherAppConstants;
@@ -15,8 +15,10 @@ import com.test.weatherapp.util.WeatherAppConstants;
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/9/12
+ *
+ * Activity class for weeks weather
  */
-public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServiceCallback {
+public class WeeksWeatherActivity extends BaseActivity implements WeatherAppProcessorCallback {
 
     private static final String LOG_TAG = "WeeksWeatherActivity";
     private String location;
@@ -29,7 +31,7 @@ public class WeeksWeatherActivity extends BaseActivity implements WeatherAppServ
     }
 
     @Override
-    public WeatherAppServiceCallback getServiceCallback() {
+    public WeatherAppProcessorCallback getServiceCallback() {
         return this;
     }
 

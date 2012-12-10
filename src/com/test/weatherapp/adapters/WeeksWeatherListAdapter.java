@@ -15,6 +15,8 @@ import com.test.weatherapp.database.WeatherAppDBContract;
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/9/12
+ *
+ * List adapter for weeks weather
  */
 public class WeeksWeatherListAdapter extends CursorAdapter {
 

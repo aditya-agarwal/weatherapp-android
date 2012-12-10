@@ -19,6 +19,13 @@ import java.util.List;
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/8/12
+ *
+ * Defines methods for the processor classes.
+ * - Creates the Http request URL.
+ * - Parses the json object and stores in the database
+ * - Broadcast intent in cases of success and errors
+ * - OnSuccess : WeatherAppConstants.ACTION_WEATHER_DATA_LOADED
+ * - OnError : WeatherAppConstants.ACTION_PARSE_ERROR
  */
 public abstract class Processor {
 
@@ -29,6 +36,13 @@ public abstract class Processor {
         mContext = context;
     }
 
+    /**
+     * Creates URL used for making http weather request using NameValuePairs
+     *
+     * @param location zipcode or city
+     * @param num_of_days number of days
+     * @return url
+     */
     protected String createUrl(String location, String num_of_days){
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -44,6 +58,12 @@ public abstract class Processor {
         return WeatherAppConstants.BASE_URL+paramString;
     }
 
+    /**
+     * Parser for Json object and passes values to the content provider for storing in the database
+     * - OnSuccess : Broadcasts intent WeatherAppConstants.ACTION_WEATHER_DATA_LOADED
+     * - OnError : Broadcasts intent WeatherAppConstants.ACTION_PARSE_ERROR
+     * @param object Json object
+     */
     public void parse(JSONObject object) {
         try {
 
@@ -93,6 +113,10 @@ public abstract class Processor {
         }
     }
 
+    /**
+     * Util method for broadcasting the intent
+     * @param action action to broadcast
+     */
     private void broadCastIntent(String action){
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(action);

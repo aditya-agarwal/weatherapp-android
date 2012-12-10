@@ -13,12 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.test.weatherapp.R;
 import com.test.weatherapp.adapters.ImageDownloader;
-import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.callbacks.WeatherAppProcessorCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.service.WeatherAppServiceHelper;
 import com.test.weatherapp.util.WeatherAppConstants;
 
-public class TodaysWeatherActivity extends BaseActivity implements WeatherAppServiceCallback, View.OnClickListener, TextWatcher {
+/**
+ * Created with IntelliJ IDEA.
+ * User: Aditya Agarwal
+ * Date: 12/8/12
+ *
+ * Activity class for today weather
+ *
+ */
+public class TodaysWeatherActivity extends BaseActivity implements WeatherAppProcessorCallback, View.OnClickListener, TextWatcher {
 
     private static final String LOG_TAG = "CurrentWeatherActivity";
 
@@ -37,7 +45,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     }
 
     @Override
-    public WeatherAppServiceCallback getServiceCallback() {
+    public WeatherAppProcessorCallback getServiceCallback() {
         return this;
     }
 
@@ -74,7 +82,6 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
         Cursor cursor = getContentResolver().query(WeatherAppDBContract.Weather.CONTENT_URI_TODAYS_WEATHER, projection, null, null, null);
         if(cursor.moveToFirst()){
 
-            //TODO: CHANGE TO HASHMAP
             String temperature = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_TEMPERATURE));
             String date = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DATE));
             String desc = cursor.getString(cursor.getColumnIndex(WeatherAppDBContract.Weather.COLUMN_NAME_DESCRIPTION));

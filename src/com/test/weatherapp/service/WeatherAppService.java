@@ -8,6 +8,8 @@ import com.test.weatherapp.processor.ProcessorFactory;
  * Created with IntelliJ IDEA.
  * User: Aditya Agarwal
  * Date: 12/8/12
+ *
+ * Service to start REST methods to get Weather
  */
 public class WeatherAppService extends IntentService {
 
@@ -20,7 +22,5 @@ public class WeatherAppService extends IntentService {
         String action = intent.getStringExtra("action");
         String location = intent.getStringExtra("location");
         ProcessorFactory.createProcessor(action, getApplicationContext()).getWeather(location);
-
-        //TODO: Broadcast intent
     }
 }

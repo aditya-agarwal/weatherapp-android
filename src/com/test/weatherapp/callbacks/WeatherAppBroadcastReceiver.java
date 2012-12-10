@@ -14,15 +14,14 @@ import com.test.weatherapp.util.WeatherAppConstants;
  */
 public class WeatherAppBroadcastReceiver extends BroadcastReceiver {
 
-    private WeatherAppServiceCallback mCallback;
+    private WeatherAppProcessorCallback mCallback;
 
-    public WeatherAppBroadcastReceiver (WeatherAppServiceCallback callback){
+    public WeatherAppBroadcastReceiver (WeatherAppProcessorCallback callback){
          mCallback = callback;
     }
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        //TODO: CHANGE TO HASHMAP
         if(intent.getAction().equals(WeatherAppConstants.ACTION_NO_INTERNET_ERROR)){
             ToolKit.showToastWithError(R.string.no_internet_available,context);
             mCallback.onError(context.getString(R.string.no_internet_available));

@@ -5,7 +5,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import com.test.weatherapp.callbacks.WeatherAppBroadcastReceiver;
-import com.test.weatherapp.callbacks.WeatherAppServiceCallback;
+import com.test.weatherapp.callbacks.WeatherAppProcessorCallback;
 import com.test.weatherapp.database.WeatherAppDBContract;
 import com.test.weatherapp.util.WeatherAppConstants;
 
@@ -17,7 +17,7 @@ import com.test.weatherapp.util.WeatherAppConstants;
 public abstract class BaseActivity extends Activity {
 
     public abstract String getTag();
-    public abstract WeatherAppServiceCallback getServiceCallback();
+    public abstract WeatherAppProcessorCallback getServiceCallback();
 
     private static final String MARKER_START = "-_-_-_-_-_-_-_-_-_-_-_";
     private static final String MARKER_END = " _-_-_-_-_-_-_-_-_-_-_-";

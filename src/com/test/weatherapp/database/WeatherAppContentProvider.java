@@ -63,14 +63,12 @@ public class WeatherAppContentProvider extends ContentProvider {
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
-
     }
 
     @Override
     public String getType(Uri uri) {
         return null;
     }
-
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -81,11 +79,10 @@ public class WeatherAppContentProvider extends ContentProvider {
         long id = 0;
 
         switch (uriType) {
-            //TODO : COMBINE CASES BELOW
             case WEEKLY_WEATHER:
             case TODAYS_WEATHER:
                 id = db.insert(WeatherAppDBContract.Weather.TABLE_NAME, null, contentValues);
-                getContext().getContentResolver().notifyChange(WeatherAppDBContract.Weather.CONTENT_URI_TODAYS_WEATHER, null);
+                getContext().getContentResolver().notifyChange(WeatherAppDBContract.Weather.CONTENT_URI, null);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);

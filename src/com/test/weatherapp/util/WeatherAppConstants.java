@@ -41,8 +41,4 @@ public class WeatherAppConstants {
     public static final String TAG_WEATHER_DESC = "weatherDesc";
     public static final String TAG_VALUE = "value";
     public static final String TAG_ICON_URL = "weatherIconUrl";
-
-
-
-
 }

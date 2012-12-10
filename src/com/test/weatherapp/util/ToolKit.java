@@ -17,9 +17,9 @@ import com.test.weatherapp.R;
 public class ToolKit {
 
     /**
-     * Check for internet connectivity
+     * Checks for internet connectivity
      * @param context
-     * @return
+     * @return boolean
      */
     public static boolean isInternetAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
@@ -30,6 +30,11 @@ public class ToolKit {
             return false;
     }
 
+    /**
+     * Util class to show a Toast with message/error
+     * @param error to display
+     * @param context
+     */
     public static void showToastWithError (int error, Context context){
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
