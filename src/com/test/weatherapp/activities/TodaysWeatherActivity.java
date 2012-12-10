@@ -58,6 +58,8 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
     @Override
     public void onError(String msg) {
         progress_spinner.dismiss();
+        button_weeks_weather.setEnabled(false);
+        button_search.setEnabled(false);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class TodaysWeatherActivity extends BaseActivity implements WeatherAppSer
                 //Start service to get weather for today
                 button_weeks_weather.setEnabled(true);
                 location = editText_search.getText().toString();
-                progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to Weather Gods..", true);
+                progress_spinner = ProgressDialog.show(this, "Please wait", "Talking to The Weather Gods..", true);
                 WeatherAppServiceHelper.getInstance(this).getTodaysWeather(location);
                 break;
 
